@@ -1,5 +1,4 @@
-
-(function(){ const k='rf-theme'; const s=localStorage.getItem(k); if(s){ document.documentElement.setAttribute('data-theme', s); } })();
+(function(){try{const t=localStorage.getItem('rf-theme');if(t){document.documentElement.setAttribute('data-theme',t)}}catch(e){}})();
 
 const TELEGRAM = "https://t.me/merxio_manager";
 
@@ -19,10 +18,19 @@ function slugify(s){
 }
 
 /* ---------- cards ---------- */
+function primaryImage(p){
+  const cand = [];
+  if (p && p.images && Array.isArray(p.images)) cand.push(p.images[0]);
+  if (p && typeof p.image==='string') cand.push(p.image);
+  if (p && typeof p.thumbnail==='string') cand.push(p.thumbnail);
+  const s = cand.find(x => typeof x==='string' && x.trim() && x!=='undefined' && !x.includes('[object'));
+  return s || 'images/hero.jpg';
+}
+
 function makeCard(p){
   const el = document.createElement('article');
   el.className = 'card reveal' + (p.in_stock===false ? ' oos' : '');
-  const img = (p.images && p.images[0]) ? p.images[0] : 'images/hero.jpg';
+  const img = primaryImage(p);
   const mats = (p.materials && p.materials.length) ? p.materials.join(' / ') : 'wool / acrylic';
   const size = p.size ? `${p.size}` : '';
   const id = p.id || slugify(p.title);
@@ -131,28 +139,17 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
 /* --- theme toggle (header) --- */
 document.addEventListener('DOMContentLoaded', ()=>{
-  const slot = document.getElementById('theme-slot'); if(!slot) return;
-  const wrap = document.createElement('span');
-  wrap.style.display='inline-flex'; wrap.style.alignItems='center'; wrap.style.gap='8px'; wrap.style.marginLeft='8px';
-  const label = document.createElement('span'); label.textContent='Dark'; label.className='muted';
-  const sw = document.createElement('input');
-  sw.type='checkbox'; sw.setAttribute('aria-label','Toggle dark mode');
-  sw.className='theme-switch';
+  const slot=document.getElementById('theme-slot'); if(!slot) return;
+  const wrap=document.createElement('span');
+  wrap.style.display='inline-flex';wrap.style.alignItems='center';wrap.style.gap='8px';wrap.style.marginLeft='8px';
+  const label=document.createElement('span');label.textContent='Dark';label.className='muted';
+  const sw=document.createElement('input');sw.type='checkbox';sw.setAttribute('aria-label','Toggle dark mode');sw.className='theme-switch';
   Object.assign(sw.style,{appearance:'none',width:'34px',height:'18px',borderRadius:'999px',background:'#d1d5db',position:'relative',outline:'none',border:'1px solid var(--border)',verticalAlign:'middle'});
-  const s = document.createElement('style');
-  s.textContent = `.theme-switch::after{content:"";position:absolute;top:50%;left:2px;width:14px;height:14px;transform:translateY(-50%);border-radius:999px;background:#fff;transition:all .2s}
+  const s=document.createElement('style');s.textContent=`.theme-switch::after{content:"";position:absolute;top:50%;left:2px;width:14px;height:14px;transform:translateY(-50%);border-radius:999px;background:#fff;transition:all .2s}
   input.theme-switch:checked::after{left:18px;background:#111}
   html[data-theme="dark"] input.theme-switch{background:#f5f5f5}
-  html[data-theme="dark"] input.theme-switch:checked::after{background:#111}`;
-  document.head.appendChild(s);
-  // state
-  const cur = document.documentElement.getAttribute('data-theme') || 'light';
-  sw.checked = (cur==='dark');
-  sw.addEventListener('change', ()=>{
-    const t = sw.checked ? 'dark' : 'light';
-    document.documentElement.setAttribute('data-theme', t);
-    try{ localStorage.setItem('rf-theme', t); }catch(e){}
-  });
-  wrap.appendChild(label); wrap.appendChild(sw);
-  slot.replaceWith(wrap);
+  html[data-theme="dark"] input.theme-switch:checked::after{background:#111}`;document.head.appendChild(s);
+  try{const t=document.documentElement.getAttribute('data-theme')||'light';sw.checked=(t==='dark');}catch(e){}
+  sw.addEventListener('change',()=>{const t=sw.checked?'dark':'light';document.documentElement.setAttribute('data-theme',t);try{localStorage.setItem('rf-theme',t)}catch(e){};});
+  wrap.appendChild(label);wrap.appendChild(sw);slot.replaceWith(wrap);
 });

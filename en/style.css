@@ -42,7 +42,7 @@ h1{font-size:46px;line-height:1.04;margin:0 0 10px}h2{font-size:28px;margin:0 0 
 .card-body .price{grid-area:p;font-weight:600}
 .card-body .cta.ghost{grid-area:v;padding:8px 14px;border-radius:999px;border:1px solid #111}
 
-/* ===== Dark theme polishing (final) ===== */
+/* ===== Dark theme polishing (stable) ===== */
 :root{ --surface-2:#f3f3f3; }
 html[data-theme="dark"]{
   --bg:#0b0b0b; --surface:#111111; --surface-2:#151515;
@@ -53,7 +53,6 @@ html[data-theme="dark"] .header,
 html[data-theme="dark"] .footer,
 html[data-theme="dark"] .section{ border-color: var(--border); }
 
-/* Pills / steps / faq chips / pricing rows */
 html[data-theme="dark"] .pill,
 html[data-theme="dark"] .chip,
 html[data-theme="dark"] .step,
@@ -67,7 +66,6 @@ html[data-theme="dark"] .list .item{
   box-shadow: none !important;
 }
 
-/* Buttons / hovers */
 html[data-theme="dark"] .menu a:hover,
 html[data-theme="dark"] .cta:hover,
 html[data-theme="dark"] .card:hover{ background:#161616; filter:none; }
@@ -76,8 +74,5 @@ html[data-theme="dark"] .meta,
 html[data-theme="dark"] .lead, 
 html[data-theme="dark"] .muted{ color: var(--muted); }
 
-/* Telegram float */
 html[data-theme="dark"] .float-telegram{ background: var(--surface-2); color: var(--text); border-color: var(--border); }
-
-/* Hero media background baseline */
 html[data-theme="dark"] .hero .media{ background: var(--surface-2); }
